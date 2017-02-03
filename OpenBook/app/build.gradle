@@ -58,6 +58,9 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
 
+    // android support library
+    compile 'com.android.support:design:25.0.0'
+
 }
 
 // retro lambda
