@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:background="@color/colorUpdateToolbar"
+    android:fitsSystemWindows="true"
+    android:minHeight="?attr/actionBarSize"
+    app:title="OpenBook">
+
+    <RelativeLayout
+        android:id="@+id/linMainToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/img_toolbar_nav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher" />
+
+
+        <TextView
+            android:id="@+id/txt_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="OpenBook"
+            android:textColor="@color/colorWhite"
+            android:textSize="21sp" />
+
+        <ImageView
+            android:id="@+id/img_toolber_gps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/img_toolber_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/img_toolber_gps"
+            android:src="@mipmap/ic_launcher" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.Toolbar>

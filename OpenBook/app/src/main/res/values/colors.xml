@@ -6,4 +6,6 @@
 
     <color name="colorUpdateToolbar">#0097a7</color>
     <color name="colorToolBarTextColor">#a0a0a0</color>
+
+    <color name="colorWhite">#ffffff</color>
 </resources>

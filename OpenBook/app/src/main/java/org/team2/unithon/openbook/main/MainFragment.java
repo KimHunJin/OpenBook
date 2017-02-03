@@ -31,7 +31,7 @@ public class MainFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         //inflater를 통해 xml을 가져온다.
-        mView = inflater.inflate(R.layout.frame_main, container, false);
+        mView = inflater.inflate(R.layout.fragment_main, container, false);
 
         initialize();
 

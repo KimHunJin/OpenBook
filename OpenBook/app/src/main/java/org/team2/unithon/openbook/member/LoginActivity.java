@@ -1,8 +1,10 @@
 package org.team2.unithon.openbook.member;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.nhn.android.naverlogin.OAuthLogin;
@@ -14,6 +16,8 @@ import org.team2.unithon.openbook.R;
 import org.team2.unithon.openbook.utils.NaverKey;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private static final String TAG = "LoginActivity";
 
     private OAuthLogin mOAuthLoginModule;
     private TextView txt;
@@ -29,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+
         context = this;
 
 
@@ -41,21 +45,31 @@ public class LoginActivity extends AppCompatActivity {
                 , OAUTH_CLIENT_NAME
         );
 
-        OAuthLoginButton mOAuthLoginButton = (OAuthLoginButton) findViewById(R.id.buttonOAuthLoginImg);
-        mOAuthLoginButton.setOAuthLoginHandler(mOAuthLoginHandler);
+        if (OAuthLogin.getInstance().getAccessToken(getApplicationContext()) != null) {
+            mOAuthLoginModule.startOauthLoginActivity(this, mOAuthLoginHandler);
+        } else {
+            setContentView(R.layout.activity_login);
+            OAuthLoginButton mOAuthLoginButton = (OAuthLoginButton) findViewById(R.id.buttonOAuthLoginImg);
+            mOAuthLoginButton.setOAuthLoginHandler(mOAuthLoginHandler);
+        }
 
-        txt = (TextView)findViewById(R.id.textView);
+
+        txt = (TextView) findViewById(R.id.textView);
 
     }
 
     private OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
         @Override
         public void run(boolean success) {
-            if(success) {
-
+            Log.e(TAG, success + "");
+            if (success) {
                 //로그인 성공시 처리해야 할것들
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            } else {
             }
-        };
+        }
     };
+
 
 }

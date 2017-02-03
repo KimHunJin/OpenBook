@@ -9,5 +9,5 @@ import rx.Observable;
  */
 
 public interface RestAPI {
-    String API_ENDPOINT = "https://api.github.com";
+
 }
