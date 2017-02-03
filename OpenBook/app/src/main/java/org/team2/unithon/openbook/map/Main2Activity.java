@@ -19,11 +19,11 @@ public class Main2Activity extends FragmentActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment1 fragment1 = new Fragment1();
-                fragment1.setArguments(new Bundle());
+                MainMapFragment mainMapFragment = new MainMapFragment();
+                mainMapFragment.setArguments(new Bundle());
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                fragmentTransaction.add(R.id.fragmentHere, fragment1);
+                fragmentTransaction.add(R.id.fragmentHere, mainMapFragment);
                 fragmentTransaction.commit();
             }
         });

@@ -27,7 +27,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".map.Main2Activity" />
-        <activity android:name=".map.Fragment1"></activity>
+        <activity android:name=".member.LoginActivity"></activity>
+        <activity android:name="com.nhn.android.naverlogin.ui.OAuthLoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name="com.nhn.android.naverlogin.ui.OAuthLoginInAppBrowserActivity"
+            android:label="OAuth2.0 In-app"/>
     </application>
 
 </manifest>
