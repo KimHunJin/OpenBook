@@ -1,5 +1,7 @@
 package org.team2.unithon.openbook.network;
 
+import org.team2.unithon.openbook.utils.StaticServerUrl;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -12,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestApiBuilder {
     public static RestAPI buildRetrofitService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RestAPI.API_ENDPOINT)
+                .baseUrl(StaticServerUrl.URL2)
                 // Data converter
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

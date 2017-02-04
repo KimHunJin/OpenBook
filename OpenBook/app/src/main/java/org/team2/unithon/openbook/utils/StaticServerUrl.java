@@ -5,5 +5,6 @@ package org.team2.unithon.openbook.utils;
  */
 
 public class StaticServerUrl {
-    public static final String URL = "http://"; // server url
+    public static final String URL = " http://api.hongkevin.com/"; // server url
+    public static final String URL2 = "http://moonwon.gonetis.com:3002/";
 }

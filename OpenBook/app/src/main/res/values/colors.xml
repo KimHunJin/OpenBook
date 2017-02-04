@@ -8,4 +8,12 @@
     <color name="colorToolBarTextColor">#a0a0a0</color>
 
     <color name="colorWhite">#ffffff</color>
+    <color name="colorToolbar">#F89474</color>
+
+    <color name="colorLittleDarkYello">#f89480</color>
+    <color name="colorBlack">#000000</color>
+
+    <color name="colorMain">#D9CBC0</color>
+
+    <color name="colorGray">#555555</color>
 </resources>

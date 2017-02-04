@@ -13,7 +13,19 @@ import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
 import org.team2.unithon.openbook.MainActivity;
 import org.team2.unithon.openbook.R;
+import org.team2.unithon.openbook.model.GPSPost;
+import org.team2.unithon.openbook.network.RestAPI;
 import org.team2.unithon.openbook.utils.NaverKey;
+import org.team2.unithon.openbook.utils.StaticServerUrl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -64,12 +76,39 @@ public class LoginActivity extends AppCompatActivity {
             Log.e(TAG, success + "");
             if (success) {
                 //로그인 성공시 처리해야 할것들
+//                network(OAuthLogin.getInstance().getAccessToken(getApplicationContext()));
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             } else {
             }
         }
     };
+
+    void network(String token) {
+        Map map = new HashMap();
+        map.put("token", token);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(StaticServerUrl.URL2)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RestAPI connectService = retrofit.create(RestAPI.class);
+        Call<GPSPost> call = connectService.setToken(map);
+        call.enqueue(new Callback<GPSPost>() {
+            @Override
+            public void onResponse(Call<GPSPost> call, Response<GPSPost> response) {
+                GPSPost gpsPost = response.body();
+                Log.e(TAG, gpsPost.getMessage());
+
+            }
+
+            @Override
+            public void onFailure(Call<GPSPost> call, Throwable t) {
+
+            }
+        });
+    }
 
 
 }

@@ -9,12 +9,22 @@
 
     <include layout="@layout/toolbar_custom"></include>
 
-    <LinearLayout
-        android:id="@+id/main_contents"
+    <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_contents"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <include layout="@layout/nav_view"/>
+
+    </android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>

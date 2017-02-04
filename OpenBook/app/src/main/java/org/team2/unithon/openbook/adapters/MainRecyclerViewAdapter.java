@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.team2.unithon.openbook.R;
 import org.team2.unithon.openbook.items.MainFragmentItem;
 
@@ -111,6 +113,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     class ViewHolder extends GenericViewHolder {
         private ImageView imgMainItem;
         private TextView txtMainTitle;
+        private TextView txtMainSub;
 
         /**
          * 생성자
@@ -120,6 +123,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
             super(v);
             imgMainItem = (ImageView) v.findViewById(R.id.img_main_contents);
             txtMainTitle = (TextView) v.findViewById(R.id.txt_main_title);
+            txtMainSub = (TextView)v.findViewById(R.id.txt_main_subTitle);
 
         }
 
@@ -133,11 +137,12 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         public void setDataOnView(int position) {
             MainFragmentItem listItem = items.get(position);
 
-//            Picasso.with(mLayoutInflater.getContext())
-//                    .load(listItem.getmImageUserUrl())
-//                    .into(this.imgJusoclItemUserThumbnail);
+            Picasso.with(mLayoutInflater.getContext())
+                    .load(listItem.getmImgURL())
+                    .into(this.imgMainItem);
             // picasso or glide
             txtMainTitle.setText(listItem.getmTitle().toString().trim());
+            txtMainSub.setText(listItem.getmSubTitle().toString().trim());
         }
     }
 

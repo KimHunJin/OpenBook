@@ -4,12 +4,17 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/intro"
     tools:context="org.team2.unithon.openbook.member.LoginActivity">
 
     <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
         android:id="@+id/buttonOAuthLoginImg"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="64dp" />
 
     <TextView
         android:layout_width="fill_parent"

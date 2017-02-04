@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="4dp">
 
     <ImageView
-        android:background="@mipmap/ic_launcher"
         android:id="@+id/img_main_contents"
         android:layout_width="match_parent"
-        android:layout_height="160dp" />
+        android:layout_height="160dp"
+        android:scaleType="fitXY" />
 
     <TextView
         android:id="@+id/txt_main_title"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="48dp" />
+        android:layout_height="24dp"
+        android:paddingLeft="8dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/txt_main_subTitle"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:paddingLeft="16dp"
+        android:textSize="12sp" />
 
 </LinearLayout>
