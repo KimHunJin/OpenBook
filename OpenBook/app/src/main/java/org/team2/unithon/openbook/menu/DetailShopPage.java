@@ -8,6 +8,9 @@ import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hkm.slider.Animations.DescriptionAnimation;
 import com.hkm.slider.SliderLayout;
@@ -15,6 +18,7 @@ import com.hkm.slider.SliderTypes.BaseSliderView;
 import com.hkm.slider.SliderTypes.TextSliderView;
 import com.hkm.slider.TransformerL;
 import com.hkm.slider.Tricks.ViewPagerEx;
+import com.squareup.picasso.Picasso;
 
 import org.team2.unithon.openbook.R;
 import org.team2.unithon.openbook.items.MainFragmentItem;
@@ -40,6 +44,9 @@ public class DetailShopPage extends AppCompatActivity implements BaseSliderView.
     private SliderLayout mDemoSlider;
     DataProvider dataProvider;
 
+    private TextView txtShopTitle, txtShopAddress, txtShopPhone, txtSHopOpenTime, txtShopCloseTime;
+    private ImageView imgButton, imgMap, imgBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,24 +56,52 @@ public class DetailShopPage extends AppCompatActivity implements BaseSliderView.
         Intent it = getIntent();
         int id = it.getExtras().getInt("id");
 
-        Log.e(TAG,id+"");
+        Log.e(TAG, id + "");
 
         initialize();
 
         mDemoSlider = (SliderLayout) findViewById(R.id.slider);
         dataProvider = new DataProvider();
 
+        Picasso.with(getApplicationContext())
+                .load("http://223.222.25.16:10080/codingclub/image/map2.png")
+                .resize(460,380)
+                .into(imgMap);
+
+        windowBar();
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         network(id);
     }
 
-    void initialize() {
+    void windowBar() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorToolbar));
+        }
+    }
 
+
+    void initialize() {
+        txtShopTitle = (TextView) findViewById(R.id.txt_detail_shop_title);
+        txtShopAddress = (TextView) findViewById(R.id.txt_detail_shop_address);
+        txtShopCloseTime = (TextView) findViewById(R.id.txt_detail_shop_close_time);
+        txtSHopOpenTime = (TextView) findViewById(R.id.txt_detail_shop_open_time);
+        txtShopPhone = (TextView) findViewById(R.id.txt_detail_shop_phone);
+        imgButton = (ImageView)findViewById(R.id.img_detail_button_info);
+        imgMap = (ImageView)findViewById(R.id.img_detail_map);
+        imgBack = (ImageView)findViewById(R.id.img_toolbar_back);
     }
 
     void network(int id) {
         Log.e(TAG, "do network");
         Map map = new HashMap();
-        map.put("id", id+"");
+        map.put("id", id + "");
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(StaticServerUrl.URL2)
@@ -79,19 +114,25 @@ public class DetailShopPage extends AppCompatActivity implements BaseSliderView.
             @Override
             public void onResponse(Call<Test> call, Response<Test> response) {
                 Test test = response.body();
-                Log.e(TAG,response.message());
-                for(int i=0;i<test.getResult().size();i++) {
+                Log.e(TAG, response.message());
+                for (int i = 0; i < test.getResult().size(); i++) {
                     int id = Integer.parseInt(test.getResult().get(i).getId());
                     String title = test.getResult().get(i).getStore_name();
                     String sub = test.getResult().get(i).getExtra();
-                    for(int j=0;j<test.getResult().get(i).getImages().length;j++) {
-                        dataProvider.setHashFile((j+1)+"",test.getResult().get(i).getImages()[j]);
+                    for (int j = 0; j < test.getResult().get(i).getImages().length; j++) {
+                        dataProvider.setHashFile((j + 1) + "", test.getResult().get(i).getImages()[j]);
                     }
                     String location = test.getResult().get(i).getLocaiton();
                     String openTime = test.getResult().get(i).getOpen_time();
                     String closeTime = test.getResult().get(i).getClose_time();
                     String owner = test.getResult().get(i).getOwner_name();
                     String phone = test.getResult().get(i).getPhone();
+
+                    txtShopPhone.setText(phone);
+                    txtSHopOpenTime.setText(openTime);
+                    txtShopCloseTime.setText(closeTime);
+                    txtShopTitle.setText(title);
+                    txtShopAddress.setText(location);
 
                 }
                 setupSlider();  // 이미지 슬라이드를 불러옵니다.

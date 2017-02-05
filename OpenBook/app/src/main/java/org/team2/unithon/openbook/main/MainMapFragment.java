@@ -1,9 +1,19 @@
 package org.team2.unithon.openbook.main;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.nhn.android.maps.NMapContext;
 import com.nhn.android.maps.NMapController;
 import com.nhn.android.maps.NMapOverlayItem;
@@ -25,16 +37,20 @@ import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 import com.nhn.android.mapviewer.overlay.NMapPathDataOverlay;
 import com.nhn.android.mapviewer.overlay.NMapResourceProvider;
 
+import org.team2.unithon.openbook.MainActivity;
 import org.team2.unithon.openbook.R;
 import org.team2.unithon.openbook.adapters.MainMapRecyclerViewAdapter;
 import org.team2.unithon.openbook.items.MainMapFragmentItem;
+import org.team2.unithon.openbook.menu.DetailShopPage;
 import org.team2.unithon.openbook.model.Test;
 import org.team2.unithon.openbook.network.RestAPI;
 import org.team2.unithon.openbook.utils.NMapFragment;
 import org.team2.unithon.openbook.utils.NMapViewerResourceProvider;
 import org.team2.unithon.openbook.utils.NaverKey;
+import org.team2.unithon.openbook.utils.RecyclerViewOnItemClickListener;
 import org.team2.unithon.openbook.utils.StaticServerUrl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +65,9 @@ import static com.nhn.android.naverlogin.OAuthLoginDefine.LOG_TAG;
 import static org.team2.unithon.openbook.BuildConfig.DEBUG;
 
 public class MainMapFragment extends NMapFragment {
+
+    private static final int REQUEST_CODE_PERMISSION = 2;
+
     private NMapContext mMapContext;
     private String CLIENT_ID = NaverKey.CLIENT_ID;
 
@@ -100,13 +119,68 @@ public class MainMapFragment extends NMapFragment {
         rcvMainMap = (RecyclerView)mView.findViewById(R.id.rcv_main_map);
         rcvMainMap.setHasFixedSize(true);
         mainMapRecyclerViewAdapter = new MainMapRecyclerViewAdapter(mView.getContext());
-
-
-
-
-        getLocation();
-
+        rcvMainMap.setLayoutManager(new LinearLayoutManager(mView.getContext()));
         rcvMainMap.setAdapter(mainMapRecyclerViewAdapter);
+
+        checkPermission();
+//        new TedPermission(getContext())
+//                .setPermissionListener(permissionlistener)
+//                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+//                .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION)
+//                .check();
+
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE_PERMISSION);
+
+            // MY_PERMISSION_REQUEST_STORAGE is an
+            // app-defined int constant
+
+        } else {
+            Log.e(TAG, "permission deny");
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_PERMISSION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                    Log.e(TAG,"OnRequestPermission");
+
+                    getLocation();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     /**
@@ -161,6 +235,20 @@ public class MainMapFragment extends NMapFragment {
 
             // put gps to server
 
+            rcvMainMap.addOnItemTouchListener(new RecyclerViewOnItemClickListener(getActivity(), rcvMainMap, new RecyclerViewOnItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    int id = mainMapRecyclerViewAdapter.getItems().get(position).getmNumber();
+                    Intent it = new Intent(getActivity(), DetailShopPage.class);
+                    it.putExtra("id",id);
+                    startActivity(it);
+                }
+
+                @Override
+                public void onItemLongClick(View v, int position) {
+
+                }
+            }));
         }
 
         public void onProviderDisabled(String provider) {
@@ -298,9 +386,15 @@ public class MainMapFragment extends NMapFragment {
                     x = Double.parseDouble(test.getResult().get(i).getX());
                     y = Double.parseDouble(test.getResult().get(i).getY());
                     text = test.getResult().get(i).getStore_name();
-                    String location = test.getResult().get(i).getLocaiton();
+                    String location = "";
+                    if(test.getResult().get(i).getLocaiton()==null) {
+                        location = "";
+                    } else {
+                        location = test.getResult().get(i).getLocaiton();
+                    }
                     int id = Integer.parseInt(test.getResult().get(i).getId());
 
+                    Log.e(TAG,id+ " : " + text + " : " + location);
                     mainMapRecyclerViewAdapter.addData(new MainMapFragmentItem(id,text,location));
                     Log.e(TAG,x+" " + y);
                     poIdata.addPOIitem(x,y,text,getResources().getDrawable(R.drawable.ic_pin_01),null);
@@ -309,6 +403,7 @@ public class MainMapFragment extends NMapFragment {
                     }
                 }
 
+                mainMapRecyclerViewAdapter.notifyDataSetChanged();
                 NMapPOIdataOverlay poIdataOverlay = mMapOverlayManager.createPOIdataOverlay(poIdata,null);
             }
 

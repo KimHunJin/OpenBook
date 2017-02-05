@@ -5,13 +5,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.nhn.android.naverlogin.OAuthLogin;
 
@@ -23,6 +27,7 @@ import org.team2.unithon.openbook.model.Test;
 import org.team2.unithon.openbook.network.NetworkRequest;
 import org.team2.unithon.openbook.network.RestAPI;
 import org.team2.unithon.openbook.network.RestApiBuilder;
+import org.team2.unithon.openbook.utils.BackPressCloseHandler;
 import org.team2.unithon.openbook.utils.StaticServerUrl;
 
 import java.util.HashMap;
@@ -45,8 +50,13 @@ public class MainActivity extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction;
     private Toolbar toolbar;
     ImageView imgSwitch, imgNav;
+    private LinearLayout linMyPage, linRegistShop, linLogout;
+    private BackPressCloseHandler backPressCloseHandler;
+    private DrawerLayout drawerLayout;
 
     private Subscription mGetPostSubscription;
+
+    private boolean navOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,29 +66,20 @@ public class MainActivity extends AppCompatActivity {
         initialize();
         click();
         windowBar();
-        network();
+//        network();
+        getThumbnail();
     }
 
-    void network() {
-        RestAPI api = RestApiBuilder.buildRetrofitService();
-        mGetPostSubscription = NetworkRequest.performAsyncRequest(api.getGpsPostObservable(), (date) -> {
-            displayPost(date);
-        }, (error) -> {
-            Log.e(TAG, "error");
-        });
+    void getThumbnail() {
+
     }
+
 
 
     void windowBar() {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorToolbar));
         }
-    }
-
-    // setting ui
-    private void displayPost(GPSPost post) {
-        Log.e(TAG, post.getMessage());
-        Log.e(TAG, post.getResult().get(0).getImage_url());
     }
 
     void initialize() {
@@ -89,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
         imgSwitch = (ImageView) findViewById(R.id.img_toolber_gps);
         imgNav = (ImageView) findViewById(R.id.img_toolbar_nav);
 
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+
+        linLogout = (LinearLayout)findViewById(R.id.nav_logout);
+        backPressCloseHandler = new BackPressCloseHandler(this);
         swapFrame();
     }
 
@@ -107,6 +112,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         imgNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(navOpen==false) {
+                    drawerLayout.openDrawer(Gravity.LEFT);
+                    navOpen = true;
+                } else {
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                    navOpen = false;
+                }
+            }
+        });
+
+        linLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e(TAG, OAuthLogin.getInstance().getAccessToken(getApplicationContext()) + "");
@@ -137,5 +155,20 @@ public class MainActivity extends AppCompatActivity {
 
         }
         fragmentTransaction.commit();
+    }
+
+    /**
+     * 뒤로가기 키를 눌렀을 때
+     */
+    @Override
+    public void onBackPressed() {
+        // 네비게이션이 열려있으면
+        //핸들러 작동
+        backPressCloseHandler.onBackPressed();
+        if(isGPS == true) {
+
+        } else {
+            Toast.makeText(getApplicationContext(), "한 번 더 누르면 앱이 종료됩니다", Toast.LENGTH_SHORT).show();
+        }
     }
 }

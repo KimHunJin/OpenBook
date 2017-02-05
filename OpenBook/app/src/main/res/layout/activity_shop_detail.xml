@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_custom" />
+    <include layout="@layout/toolbar_custom_back" />
 
     <ScrollView
         android:id="@+id/ScrollView"
@@ -62,8 +62,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:layout_marginTop="24dp"
                 android:layout_marginLeft="40dp"
+                android:layout_marginTop="24dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -249,25 +249,26 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="380dp">
-
-            </LinearLayout>
             <!--            <com.nhn.android.maps.NMapView
                             android:id="@+id/shop_detail_map_view"
                             android:layout_width="match_parent"
                             android:layout_height="380dp" />-->
 
+            <ImageView
+                android:id="@+id/img_detail_map"
+                android:layout_width="match_parent"
+                android:layout_height="380dp" />
+
         </LinearLayout>
     </ScrollView>
 
     <Button
+        android:id="@+id/btn_detail_shop_rec"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.1"
-        android:text="예약하기"
         android:background="@color/colorToolbar"
+        android:text="예약하기"
         android:textColor="@color/colorWhite"
         android:textSize="24sp" />
 

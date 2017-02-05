@@ -1,6 +1,7 @@
 package org.team2.unithon.openbook.intro;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,6 +14,9 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        windowBar();
+
         // 화면이 보이고 2초 뒤에 로그인 페이지로 넘어감
         Thread mTimer = new Thread() {
             @Override
@@ -28,6 +32,13 @@ public class SplashActivity extends AppCompatActivity {
         };
         mTimer.start();
     }
+
+    void windowBar() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorToolbar));
+        }
+    }
+
 
     @Override
     protected void onPause() {

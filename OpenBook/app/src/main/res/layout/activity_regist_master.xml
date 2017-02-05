@@ -31,7 +31,6 @@
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background=""
                 android:layout_weight="0.8" />
 
 

@@ -2,6 +2,7 @@ package org.team2.unithon.openbook.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,6 +137,8 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         @Override
         public void setDataOnView(int position) {
             MainFragmentItem listItem = items.get(position);
+
+            Log.e(TAG,listItem.getmImgURL());
 
             Picasso.with(mLayoutInflater.getContext())
                     .load(listItem.getmImgURL())

@@ -2,6 +2,7 @@ package org.team2.unithon.openbook.member;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,9 +66,15 @@ public class LoginActivity extends AppCompatActivity {
             mOAuthLoginButton.setOAuthLoginHandler(mOAuthLoginHandler);
         }
 
+        windowBar();
 
         txt = (TextView) findViewById(R.id.textView);
 
+    }
+    void windowBar() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorToolbar));
+        }
     }
 
     private OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
